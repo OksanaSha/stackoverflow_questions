@@ -1,6 +1,5 @@
 import requests
 
-from pprint import pprint
 from datetime import datetime
 
 
@@ -29,10 +28,9 @@ def get_params(from_date, to_date, tags):
 
 params = get_params('2021-10-07', '2021-10-09', ['Python'])
 page = 1
-flag = True
 
-while flag:
-    params['page'] = str(page)
+while True:
+    params['page'] = f'{page}'
     response = requests.get('https://api.stackexchange.com/questions', params=params)
     response_json = response.json()
 
@@ -44,4 +42,5 @@ while flag:
     if response_json['has_more']:
         page += 1
     else:
-        flag = False
+        print ('Success')
+        break
