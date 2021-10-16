@@ -29,18 +29,17 @@ def get_params(from_date, to_date, tags):
 params = get_params('2021-10-07', '2021-10-09', ['Python'])
 page = 1
 
-while True:
-    params['page'] = f'{page}'
-    response = requests.get('https://api.stackexchange.com/questions', params=params)
-    response_json = response.json()
+with open('questions.txt', 'w') as file:
+    while True:
+        params['page'] = f'{page}'
+        response = requests.get('https://api.stackexchange.com/questions', params=params)
+        response_json = response.json()
 
-    with open('questions.txt', 'a') as file:
-        for item in response_json['items']:
-            file.write(item['title'])
-            file.write('\n')
-
-    if response_json['has_more']:
-        page += 1
-    else:
-        print ('Success')
-        break
+        if response_json.get('items'):
+            for item in response_json['items']:
+                file.write(item['title'])
+                file.write('\n')
+            page += 1
+        else:
+            print('Success')
+            break
